@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Task_Management_Platform.Models
+namespace ArticlesApp.Models
 {
-    public class Team : Controller
+    public class Category
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        [Key]
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Numele categoriei este obligatoriu")]
+        public string TeamName { get; set; }
+
+        public virtual ICollection<Task> Tasks { get; set; }
     }
+
 }
