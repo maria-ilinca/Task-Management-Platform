@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace ArticlesApp.Controllers
+namespace Task_Management_Platform.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class UsersController : Controller
@@ -111,6 +111,7 @@ namespace ArticlesApp.Controllers
             var user = db.Users
                          .Include("Tasks")
                          .Include("Teams")
+                         .Include("Comments")
                          .Where(u => u.Id == id)
                          .First();
 

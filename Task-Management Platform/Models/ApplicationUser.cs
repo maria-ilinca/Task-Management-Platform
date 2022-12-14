@@ -11,7 +11,6 @@ namespace Task_Management_Platform.Models
         public virtual ICollection<Task>? Tasks { get; set; }
 
         public virtual ICollection<Team>? Teams { get; set; }
-        // huh?
 
         public string? FirstName { get; set; }
 

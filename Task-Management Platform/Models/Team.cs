@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ArticlesApp.Models
+namespace Task_Management_Platform.Models
 {
     public class Team
     {

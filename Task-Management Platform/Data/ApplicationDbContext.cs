@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using Task = Task_Management_Platform.Models.Task;
 
 namespace Task_Management_Platform.Data
 {

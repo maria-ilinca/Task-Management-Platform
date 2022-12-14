@@ -1,11 +1,11 @@
-﻿using ArticlesApp.Data;
-using ArticlesApp.Models;
+﻿using Task_Management_Platform.Data;
+using Task_Management_Platform.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using Task_Management_Platform.Data;
 
-namespace ArticlesApp.Controllers
+namespace Task_Management_Platform.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class CategoriesController : Controller

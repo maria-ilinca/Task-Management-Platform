@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Task_Management_Platform.Data;
+using Task_Management_Platform.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,20 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// CreateScope ofera acces la instanta curenta a aplicatiei
+// variabila scope are un Service Provider folosit pentru a injecta dependentele 
+// in aplicatie -> bd, cookie, sesiune, autentif, pachete, etc
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    //SeedData.Initialize(services);
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

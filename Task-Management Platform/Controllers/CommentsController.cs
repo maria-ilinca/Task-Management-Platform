@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using Task_Management_Platform.Models;
-using ArticlesApp.Data;
+using Task_Management_Platform.Data;
 
-namespace ArticlesApp.Controllers
+namespace Task_Management_Platform.Controllers
 {
     public class CommentsController : Controller
     {
@@ -51,7 +51,7 @@ namespace ArticlesApp.Controllers
 
         }
 
-        // Stergerea unui comentariu asociat unui articol din baza de date
+        // Stergerea unui comentariu asociat unui task din baza de date
         [HttpPost]
         [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult Delete(int id)
