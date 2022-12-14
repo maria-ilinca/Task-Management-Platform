@@ -18,5 +18,7 @@ namespace Task_Management_Platform.Models
         [Required(ErrorMessage = "Introduceti data de finalizare a taskului")]
         public DateTime DataFinalizare { get; set; }
 
+        public Comment[] Comments { get; set; }
+
     }
 }
