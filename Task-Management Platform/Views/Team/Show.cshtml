@@ -1,0 +1,24 @@
+﻿@model ArticlesApp.Models.Team 
+@{
+    ViewBag.Title = "Afisare Echipa";
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+<br />
+
+<p>@Model.TeamName</p>
+
+
+<form method="post" action="/Teams/Delete/@Model.Id">
+
+    <button class="btn btn-danger" type="submit">Sterge echipa</button>
+
+</form>
+<br />
+<a class="btn alert-success" href="/Teams/Index/">Afisare lista tuturor echipelor tale</a>
+
+<br />
+<hr />
+<br />

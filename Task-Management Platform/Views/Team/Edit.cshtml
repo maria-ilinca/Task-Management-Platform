@@ -1,0 +1,25 @@
+﻿@model ArticlesApp.Models.Team
+
+
+@{
+    ViewBag.Title = "Editare Echipa";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm(controllerName: "Teams", actionName: "Edit", method: FormMethod.Post,
+      routeValues: new { id = Model.Id }))
+{
+    @Html.Label("TeamName", "Numele echipei")
+    <br />
+    @Html.Editor("TeamName")
+
+    @Html.ValidationMessageFor(m => m.TeamName, null, new { @class = "text-danger" })
+    <br />
+
+    <br />
+
+    <button class="btn btn-success" type="submit">Modifica detaliile echipei tale</button>
+}
+

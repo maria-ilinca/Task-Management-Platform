@@ -5,7 +5,7 @@ namespace Task_Management_Platform.Models
     public class Task
     {
         [Key]
-        public int Id { get; set; }
+        public int TaskId { get; set; }
         [Required(ErrorMessage = "Trebuie sa introduceti un nume pentru task")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Introduceti descrierea unui task")]

@@ -2,12 +2,12 @@
 
 namespace ArticlesApp.Models
 {
-    public class Category
+    public class Team
     {
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Numele categoriei este obligatoriu")]
+        [Required(ErrorMessage = "Trebuie sa introduceti un nume pentru echipa voastra")]
         public string TeamName { get; set; }
 
         public virtual ICollection<Task> Tasks { get; set; }

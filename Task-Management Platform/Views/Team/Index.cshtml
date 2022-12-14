@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Echipele tale";
+}
+
+<h2>@ViewBag.Title</h2>
+<br />
+
+@if (TempData.ContainsKey("message"))
+{
+    <h1>@ViewBag.message</h1>
+}
+
+
+<br />
+
+@foreach (var team in ViewBag.Teams)
+{
+    @Html.Label("TeamName", "Numele echipei din care faci parte")
+    <p>@team.CategoryName</p>
+    <a class="btn alert-success" href="/Teams/Show/@team.Id">Afisare Echipa</a>
+    <a class="btn alert-success" href="/Teams/Edit/@team.Id">Editare Echipa</a>
+    <br />
+    <hr />
+    <br />
+}
+<br />
+<a class="btn btn-success" href="/Team/New">Adauga o noua echipa</a>
+<br />

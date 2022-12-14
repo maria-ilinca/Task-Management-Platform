@@ -1,0 +1,49 @@
+﻿@model Task_Management_Platform.Models.Task
+
+<h2 class="text-center mt-5">Editarea unui task</h2>
+<br />
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            @using (Html.BeginForm(actionName: "Edit", controllerName: "Tasks",
+            method: FormMethod.Post,
+            routeValues: new { id = Model.TaskId }))
+            {
+
+
+                @Html.Label("Title", "Denumire Task")
+                <br />
+                @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
+
+                @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+                <br />
+
+                <br />
+
+                @Html.Label("Content", "Continut Task")
+                <br />
+                @Html.Editor("Content", new { htmlAttributes = new { @class = "form-control" } })
+
+                @Html.ValidationMessageFor(m => m.Description null, new { @class = "text-danger" })
+                // nu stiu sa rez aici
+                <br />
+
+                <br />
+
+                <label>Selecteaza un task</label>
+                @Html.DropDownListFor(m => m.TaskId,
+            new SelectList(Model.Status, "Value", "Text"),
+            "Selecteaza un task", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TaskId, null, new { @class = "text-danger" })
+                <br />
+
+                <br />
+
+                <button class="btn btn-sm btn-success" type="submit">Modifica un task</button>
+
+            }
+        </div>
+    </div>
+</div>
+
+

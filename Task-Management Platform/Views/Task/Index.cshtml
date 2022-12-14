@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Afisare task-uri</h2>
+<br />
+@if (ViewBag.Message != null)
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+}
+
+<br />
+
+@foreach (Task_Management_Platform .Models.Task task in ViewBag.Task)
+{
+    <div class="card">
+
+        @Html.Partial("TaskInfo", task )
+
+
+        <a class="btn btn-success" href="/Tasks/Show/@task.TaskId">Afisare task</a>
+
+
+        @*
+
+    *@
+
+
+        @*
+    
+
+    *@
+
+    </div>
+
+    <br />
+    <br />
+}
+
+
