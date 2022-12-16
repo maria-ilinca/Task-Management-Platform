@@ -22,18 +22,19 @@
 
                 <br />
 
-                @Html.Label("Content", "Continutul unui task")
+                @Html.Label("Description", "Descrierea unui task")
                 <br />
-                @Html.TextArea("Content", null, new { @class = "form-control" })
+                @Html.TextArea("Description", null, new { @class = "form-control" })
 
-                @Html.ValidationMessage("Content", null, new { @class = "text-danger" })
+                @Html.ValidationMessage("Description", null, new { @class = "text-danger" })
                 <br />
 
                 <br />
 
                 <label>Selectati task-ul in functie de status</label>
-                @Html.DropDownListFor(m => m.TaskId, new SelectList(Model.Status, "Value", "Text"),
-            "Selectati categoria", new { @class = "form-control" })
+                string[] ViableStatuses = new[] { "In progress", "Finished" };
+                @Html.DropDownListFor(m => m.Status, new SelectList(ViableStatuses),
+                "Selectati categoria", new { @class = "form-control" })
 
                 @Html.ValidationMessageFor(m => m.TaskId, null, new { @class = "text-danger" })
                 <br />

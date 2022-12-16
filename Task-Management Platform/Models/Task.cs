@@ -9,7 +9,6 @@ namespace Task_Management_Platform.Models
         [Required(ErrorMessage = "Trebuie sa introduceti un nume pentru task")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Introduceti descrierea unui task")]
-
         public string Description { get; set; }
         [Required(ErrorMessage= "Fiecare task are nevoie de un status")]
         public string Status { get; set; }
