@@ -16,13 +16,13 @@ namespace Task_Management_Platform.Controllers
             db = context;
         }
 
-   
+
         public IActionResult Index()
         {
             var tasks = db.Tasks;
             ViewBag.Tasks = tasks;
 
-            if( TempData.ContainsKey("message"))
+            if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
             }
@@ -32,8 +32,7 @@ namespace Task_Management_Platform.Controllers
 
         public IActionResult Show(int id)
         {
-            Task task = db.Tasks.Include("Status").Include("Comments")
-                .Where(tsk => tsk.TaskId == id)
+            Task task = db.Tasks
                 .First();
             return View(task);
         }
@@ -49,17 +48,28 @@ namespace Task_Management_Platform.Controllers
         public IActionResult New(Task task)
         {
             task.DataStart = DateTime.Now;
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 db.Tasks.Add(task);
                 db.SaveChanges();
                 TempData["message"] = "Taskul a fost adaugat";
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
             else
             {
                 return View(task);
             }
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            Task task = db.Tasks
+                                .First();
+            db.Tasks.Remove(task);
+            db.SaveChanges();
+            TempData["message"] = "Task-ul a fost sters";
+            return RedirectToAction("Index");
         }
 
     }

@@ -14,8 +14,8 @@
 
     @Html.Partial("TaskInfo", Model)
 
-    @if (ViewBag.AfisareButoane == true && Model.TaskId == ViewBag.UserCurent || ViewBag.EsteAdmin)
-    {
+    @*@if (ViewBag.AfisareButoane == true)*@
+    @*{*@
         <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
 
             <a class="btn btn-success" href="/Tasks/Edit/@Model.TaskId">Modifica un task</a>
@@ -27,7 +27,7 @@
             </form>
 
         </div>
-    }
+    @*}*@
 
     <form method="POST" asp-controller="Tasks" asp-action="AddBookmark">
         <input type="hidden" name="TaskId" value="@Model.TaskId" />
@@ -35,10 +35,7 @@
             <div>
                 <select name="BookmarkId" class="form-control">
                     <option selected>Adauga un task unei echipe</option>
-                    @foreach (var bookmark in ViewBag.UserBookmarks)
-                    {
-                        <option value="@bookmark.Id">@bookmark.Name</option>
-                    }
+       
                 </select>
             </div>
             <div>
@@ -61,7 +58,7 @@
 
 @* Afisare comentarii impreuna cu butoanele de editare si stergere *@
 
-@foreach (var comm in Model.Comments)
+@*@foreach (var comm in Model.Comments)
 {
     <div class="container">
         <div class="row">
@@ -112,7 +109,7 @@
         </div>
 
     </div>
-}
+}*@
 
 
 
