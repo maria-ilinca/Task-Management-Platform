@@ -1,0 +1,12 @@
+﻿@model Task_Management_Platform.Models.Task
+
+<div class="card-body">
+
+    <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Title</h3>
+    <div class="card-text">@Html.Raw(Model.Description)</div>
+    <div class="d-flex justify-content-between flex-row mt-5">
+        <div><i class="bg-info bi-globe"></i>@Model.Status</div>
+        <div><i class="bi bi-person"></i>@Model.DataStart</div>
+        @*<span class="alert-succes">@Model.DataFinalizare</span>*@
+    </div>
+</div>
