@@ -16,7 +16,7 @@
 @foreach (var team in ViewBag.Teams)
 {
     @Html.Label("TeamName", "Numele echipei din care faci parte")
-    <p>@team.CategoryName</p>
+    <p>@team.TeamName</p>
     <a class="btn alert-success" href="/Teams/Show/@team.Id">Afisare Echipa</a>
     <a class="btn alert-success" href="/Teams/Edit/@team.Id">Editare Echipa</a>
     <br />

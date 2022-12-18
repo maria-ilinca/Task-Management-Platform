@@ -10,7 +10,7 @@ namespace Task_Management_Platform.Models
         [Required(ErrorMessage = "Trebuie sa introduceti un nume pentru echipa voastra")]
         public string TeamName { get; set; }
 
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Task>? Tasks { get; set; }
     }
 
 }
