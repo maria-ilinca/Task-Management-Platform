@@ -14,8 +14,8 @@
 
     @Html.Partial("TaskInfo", Model)
 
-    @*@if (ViewBag.AfisareButoane == true)*@
-    @*{*@
+    @if (ViewBag.AfisareButoane == true)
+    {
         <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
 
             <a class="btn btn-success" href="/Tasks/Edit/@Model.TaskId">Modifica un task</a>
@@ -27,7 +27,7 @@
             </form>
 
         </div>
-    @*}*@
+    }
 
     <form method="POST" asp-controller="Tasks" asp-action="AddBookmark">
         <input type="hidden" name="TaskId" value="@Model.TaskId" />
@@ -58,7 +58,7 @@
 
 @* Afisare comentarii impreuna cu butoanele de editare si stergere *@
 
-@*@foreach (var comm in Model.Comments)
+@foreach (var comm in Model.Comments)
 {
     <div class="container">
         <div class="row">
@@ -70,7 +70,7 @@
 
                     <p>@comm.Content</p>
                     <small>@comm.Date</small>
-                    <strong><i class="bi bi-person"></i>@comm.User.UserName</strong>
+                    @*<strong><i class="bi bi-person"></i>@comm.User.UserName</strong>*@
 
                 </div>
                 <br>
@@ -109,10 +109,10 @@
         </div>
 
     </div>
-}*@
+}
 
 
-
+@*Formularul pentru adaugare comentarii*@
 <div class="container">
 
     <div class="row">
@@ -123,11 +123,11 @@
 
             <div class="card">
 
-                <form method="post" action="/Articles/Show/@Model.TaskId">
+                <form method="post" action="/Tasks/Show/@Model.TaskId">
 
                     <div class="card-body">
 
-                        <input type="hidden" name="ArticleId" value="@Model.TaskId" />
+                        <input type="hidden" name="TaskId" value="@Model.TaskId" />
 
                         <label>Continut comentariu</label>
                         <br />

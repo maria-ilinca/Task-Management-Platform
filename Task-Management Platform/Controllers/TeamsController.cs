@@ -8,11 +8,11 @@ using System.Data;
 namespace Task_Management_Platform.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class CategoriesController : Controller
+    public class TeamsController : Controller
     {
         private readonly ApplicationDbContext db;
 
-        public CategoriesController(ApplicationDbContext context)
+        public TeamsController(ApplicationDbContext context)
         {
             db = context;
         }
@@ -36,7 +36,7 @@ namespace Task_Management_Platform.Controllers
             return View(category);
         }
 
-        public ActionResult New()
+        public IActionResult New()
         {
             return View();
         }

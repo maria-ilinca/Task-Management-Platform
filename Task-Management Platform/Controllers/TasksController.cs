@@ -106,13 +106,46 @@ namespace Task_Management_Platform.Controllers
             return View();
         }
 
+        [Authorize(Roles = "User,Organizer,Admin")]
         public IActionResult Show(int id)
         {
-            Task task = db.Tasks
+            Task task = db.Tasks.Include("Comments")
+                .Where(tsk => tsk.TaskId == id)
                 .First();
+            SetAccesRights();
             return View(task);
         }
 
+        //Adaugarea unui comentariu asociat unui task
+        [HttpPost]
+        [Authorize(Roles = "User,Organizer,Admin")]
+
+        public IActionResult Show([FromForm] Comment comment)
+        {
+            comment.Date = DateTime.Now;
+            comment.UserId = _userManager.GetUserId(User);
+
+            if(ModelState.IsValid)
+            {
+                db.Comments.Add(comment);
+                db.SaveChanges();
+                return Redirect("/Tasks/Show/" + comment.TaskId);
+            }
+
+            else
+            {
+                Task tsk = db.Tasks.Include("Comments")
+                    .Where(tsk => tsk.TaskId == comment.TaskId)
+                    .First();
+
+                SetAccesRights();
+                return View(tsk);
+            }
+
+
+        }
+
+        // se afiseaza formularul pentru a completa datele unui articol
         public IActionResult New()
         {
             Task task = new Task();
@@ -120,6 +153,7 @@ namespace Task_Management_Platform.Controllers
             return View(task);
         }
 
+        // se adauga articolul din formular in baza de date
         [HttpPost]
         public IActionResult New(Task task)
         {
@@ -137,6 +171,24 @@ namespace Task_Management_Platform.Controllers
             }
         }
 
+        // formular pentru editarea unui articol
+
+        public IActionResult Edit(int id)
+        {
+            Task task = db.Tasks.First();
+
+            if (User.IsInRole("Admin"))
+            {
+                return View(task);
+            }
+
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa modificati aces task";
+                return RedirectToAction("Index");
+            }
+        }
+
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -148,5 +200,19 @@ namespace Task_Management_Platform.Controllers
             return RedirectToAction("Index");
         }
 
+        // Conditii de afisare a butoanelore se editare/stergere
+        private void SetAccesRights()
+        {
+            ViewBag.AfisareButoane = true;
+            if (User.IsInRole("Organizator"))
+            {
+                ViewBag.AfisareButoane = true;
+            }
+            ViewBag.EsteAdmin = User.IsInRole("Admin");
+            ViewBag.UserCurent = _userManager.GetUserId(User);
+        }
+
     }
+
+
 }
