@@ -153,10 +153,14 @@ namespace Task_Management_Platform.Controllers
             return View(task);
         }
 
+  
+
         // se adauga articolul din formular in baza de date
         [HttpPost]
         public IActionResult New(Task task)
         {
+            if (TempData["ProjectId"] != null)
+                task.ProjectId = TempData["ProjectId"].ToString();
             task.DataStart = DateTime.Now;
             if (ModelState.IsValid)
             {
@@ -194,6 +198,10 @@ namespace Task_Management_Platform.Controllers
         {
             Task task = db.Tasks
                                 .First();
+            if (task.Comments != null)
+            {
+                db.Tasks.Remove((Task)task.Comments);
+            }
             db.Tasks.Remove(task);
             db.SaveChanges();
             TempData["message"] = "Task-ul a fost sters";

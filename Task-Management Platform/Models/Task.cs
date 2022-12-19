@@ -17,7 +17,13 @@ namespace Task_Management_Platform.Models
         [Required(ErrorMessage = "Introduceti data de finalizare a taskului")]
         public DateTime DataFinalizare { get; set; }
 
+        public string? ProjectId { get; set; }
+
+        public virtual Project? Project { get; set; }
+
         public virtual ICollection<Comment>? Comments { get; set; }
+
+        public virtual ICollection<TaskUser>? TaskUsers { get; set; }
 
     }
 }

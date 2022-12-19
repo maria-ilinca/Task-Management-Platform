@@ -19,7 +19,7 @@ namespace Task_Management_Platform.Data
         public DbSet<Team> Teams { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Project> Projects { get; set; }
-         
+
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
 
@@ -41,6 +41,22 @@ namespace Task_Management_Platform.Data
         //        .WithMany(ab => ab.ArticleBookmarks)
         //        .HasForeignKey(ab => ab.BookmarkId); */
         //} 
-        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            base.OnModelCreating(modelBuilder);
+
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Task)
+                .WithMany(t => t.Comments)
+                .HasForeignKey(c => c.TaskId);
+
+
+        }
+
     }
+
+    
 }

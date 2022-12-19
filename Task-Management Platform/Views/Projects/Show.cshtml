@@ -1,0 +1,46 @@
+﻿@model Task_Management_Platform.Models.Project
+
+
+@{
+    ViewBag.Title = "Afisare Proiect";
+}
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @TempData["messageType"]">
+        @TempData["message"]
+    </div>
+}
+
+<br />
+
+<div class="card-body">
+    <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Name</h3>
+    @if (Model.Description != null)
+    {
+        <dib class="card-text">@Html.Raw(Model.Description)</dib>
+    }
+    @if (ViewBag.AfisareButoane == true || Model.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+    {
+        <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
+
+            <a class="btn btn-success" href="/Projects/Edit/@Model.Id">Editeaza proiect</a>
+
+            <form method="post" action="/Projects/Delete/@Model.Id">
+
+                <button class="btn btn-danger" type="submit">Sterge proiect</button>
+
+            </form>
+
+        </div>
+    }
+    
+    <form method="post" action="/Projects/AddTask/@Model.Id">
+        <button class="btn btn-primary" type="submit">Adauga task</button>
+    </form>
+
+@*    <a asp-controller="Tasks" asp-action="New">
+        <input type="button" class="btn btn-primary" value="New" />
+    </a>*@
+
+</div>

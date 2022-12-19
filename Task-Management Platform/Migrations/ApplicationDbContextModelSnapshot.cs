@@ -306,7 +306,10 @@ namespace Task_Management_Platform.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProjectId")
+                    b.Property<string>("ProjectId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProjectId1")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -324,11 +327,37 @@ namespace Task_Management_Platform.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("ProjectId1");
 
                     b.HasIndex("TeamId");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("Task_Management_Platform.Models.TaskUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("TaskId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("TaskUser");
                 });
 
             modelBuilder.Entity("Task_Management_Platform.Models.Team", b =>
@@ -434,13 +463,30 @@ namespace Task_Management_Platform.Migrations
                         .WithMany("Tasks")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("Task_Management_Platform.Models.Project", null)
+                    b.HasOne("Task_Management_Platform.Models.Project", "Project")
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId1");
 
                     b.HasOne("Task_Management_Platform.Models.Team", null)
                         .WithMany("Tasks")
                         .HasForeignKey("TeamId");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Task_Management_Platform.Models.TaskUser", b =>
+                {
+                    b.HasOne("Task_Management_Platform.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("TaskUsers")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Task_Management_Platform.Models.Task", "Task")
+                        .WithMany("TaskUsers")
+                        .HasForeignKey("TaskId");
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("Task_Management_Platform.Models.Team", b =>
@@ -453,6 +499,8 @@ namespace Task_Management_Platform.Migrations
             modelBuilder.Entity("Task_Management_Platform.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("TaskUsers");
 
                     b.Navigation("Tasks");
 
@@ -467,6 +515,8 @@ namespace Task_Management_Platform.Migrations
             modelBuilder.Entity("Task_Management_Platform.Models.Task", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("TaskUsers");
                 });
 
             modelBuilder.Entity("Task_Management_Platform.Models.Team", b =>

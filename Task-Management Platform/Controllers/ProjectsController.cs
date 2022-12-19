@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Eventing.Reader;
 using Task_Management_Platform.Data;
 using Task_Management_Platform.Models;
+using Humanizer;
+using Task = Task_Management_Platform.Models.Task;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace Task_Management_Platform.Controllers
 {
@@ -36,7 +39,7 @@ namespace Task_Management_Platform.Controllers
 
             SetAccesRights();
 
-            if(User.IsInRole("User") || User.IsInRole("Organizer"))
+            if (User.IsInRole("User") || User.IsInRole("Organizer"))
             {
                 var projects = from project in db.Projects.Include("User")
                                .Where(p => p.UserId == _userManager.GetUserId(User))
@@ -46,7 +49,7 @@ namespace Task_Management_Platform.Controllers
                 return View();
             }
 
-            else if(User.IsInRole("Admin"))
+            else if (User.IsInRole("Admin"))
             {
                 var projects = from project in db.Projects.Include("User")
                                select project;
@@ -61,6 +64,50 @@ namespace Task_Management_Platform.Controllers
             }
 
 
+        }
+
+        //Afisare proiect individual
+
+        [Authorize(Roles ="User,Organize,Admin")]
+        public IActionResult Show(int id)
+        {
+            Project project = db.Projects.Include("User")
+                                         .Include("Tasks")
+                                         .Where(pr => pr.Id == id)
+                                         .First();
+            SetAccesRights();
+            return View(project);
+        }
+        // Adaugarea unui task pentru un proiect
+        [HttpPost]
+        [Authorize(Roles = "User,Organizer,Admin")]
+        public IActionResult AddTask(int id)
+        {
+            TempData["ProjectId"] = id;
+            return Redirect("/Tasks/New");
+        }
+        public IActionResult New()
+        {
+            Project project = new Project();
+            return View(project);
+        }
+
+        [HttpPost]
+        public IActionResult New(Project project)
+        {
+            project.UserId = _userManager.GetUserId(User);
+
+            if(ModelState.IsValid)
+            {
+                db.Projects.Add(project);
+                db.SaveChanges();
+                TempData["message"] = "Proiectul a fost creat cu succes";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(project);
+            }
         }
         private void SetAccesRights()
         {
