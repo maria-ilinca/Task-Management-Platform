@@ -12,8 +12,8 @@ using Task_Management_Platform.Data;
 namespace Task_Management_Platform.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221219222431_foreign-key")]
-    partial class foreignkey
+    [Migration("20221220150102_OrganizerId")]
+    partial class OrganizerId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -295,9 +295,6 @@ namespace Task_Management_Platform.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TaskId"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("DataFinalizare")
                         .HasColumnType("datetime2");
 
@@ -307,6 +304,9 @@ namespace Task_Management_Platform.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrganizerId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProjectId")
                         .HasColumnType("nvarchar(max)");
@@ -327,7 +327,7 @@ namespace Task_Management_Platform.Migrations
 
                     b.HasKey("TaskId");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("OrganizerId");
 
                     b.HasIndex("ProjectId1");
 
@@ -461,9 +461,9 @@ namespace Task_Management_Platform.Migrations
 
             modelBuilder.Entity("Task_Management_Platform.Models.Task", b =>
                 {
-                    b.HasOne("Task_Management_Platform.Models.ApplicationUser", null)
+                    b.HasOne("Task_Management_Platform.Models.ApplicationUser", "Organizer")
                         .WithMany("Tasks")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("OrganizerId");
 
                     b.HasOne("Task_Management_Platform.Models.Project", "Project")
                         .WithMany("Tasks")
@@ -472,6 +472,8 @@ namespace Task_Management_Platform.Migrations
                     b.HasOne("Task_Management_Platform.Models.Team", null)
                         .WithMany("Tasks")
                         .HasForeignKey("TeamId");
+
+                    b.Navigation("Organizer");
 
                     b.Navigation("Project");
                 });

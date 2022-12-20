@@ -1,9 +1,24 @@
-﻿@{
+﻿<style>
+    body{
+        background-color: #472183;
+    }
+</style>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4 text-white">Welcome!</h1>
+    <p></p>
 </div>
 
+@if (ViewBag.AfisareButoane == true)
+{
+    <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
+
+            <a class="btn btn-primary" href="/Tasks">Tasks</a>
+            <a class="btn btn-primary" href="/Projects">Projects</a>
+            <a class="btn btn-primary" href="/Teams">Teams</a>
+    </div>
+}

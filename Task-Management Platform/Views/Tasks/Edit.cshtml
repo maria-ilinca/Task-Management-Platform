@@ -20,9 +20,9 @@
 
                 <br />
 
-                @Html.Label("Content", "Continut Task")
+                @Html.Label("Description", "Continut Task")
                 <br />
-                @Html.Editor("Content", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.Editor("Description", new { htmlAttributes = new { @class = "form-control" } })
 
                 @Html.ValidationMessageFor(m => m.Description, null, new { @class = "text-danger" })
                 // nu stiu sa rez aici
@@ -30,11 +30,11 @@
 
                 <br />
 
-                <label>Selecteaza un task</label>
-                @Html.DropDownListFor(m => m.TaskId,
-            new SelectList(Model.Status, "Value", "Text"),
-            "Selecteaza un task", new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.TaskId, null, new { @class = "text-danger" })
+                <label>Selecteaza status</label>
+                string[] ViableStatuses = new[] { "In progress", "Not started", "Finished" };
+                @Html.DropDownListFor(m => m.Status, new SelectList(ViableStatuses),
+                "Selectati categoria", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Status, null, new { @class = "text-danger" })
                 <br />
 
                 <br />

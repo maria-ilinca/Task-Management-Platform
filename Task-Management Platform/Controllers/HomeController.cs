@@ -15,6 +15,10 @@ namespace Task_Management_Platform.Controllers
 
         public IActionResult Index()
         {
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.AfisareButoane = true;
+            }
             return View();
         }
 

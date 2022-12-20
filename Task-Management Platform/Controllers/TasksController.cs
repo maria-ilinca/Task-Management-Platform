@@ -181,7 +181,7 @@ namespace Task_Management_Platform.Controllers
         {
             Task task = db.Tasks.First();
 
-            if (User.IsInRole("Admin"))
+            if (task.OrganizerId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
                 return View(task);
             }
@@ -190,6 +190,36 @@ namespace Task_Management_Platform.Controllers
             {
                 TempData["message"] = "Nu aveti dreptul sa modificati aces task";
                 return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Organizer, Admin")]
+        public IActionResult Edit(int id, Task requestTask)
+        {
+            Task task = db.Tasks.Find(id);
+
+            if(ModelState.IsValid)
+            {
+                if (task.OrganizerId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                {
+                    task.Title = requestTask.Title;
+                    task.Description = requestTask.Description;
+                    task.Status = requestTask.Status;
+                    TempData["message"] = "Task-ul a fost modficat";
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["message"] = "Nu aveti aceste drepturi";
+                    return RedirectToAction("Index");
+                }
+
+            }
+            else
+            {
+                return View(requestTask);
             }
         }
 

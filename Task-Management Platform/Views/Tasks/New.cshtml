@@ -54,7 +54,7 @@
                 <br />
 
                 <label>Selectati task-ul in functie de status</label>
-                string[] ViableStatuses = new[] { "In progress", "Finished" };
+                string[] ViableStatuses = new[] { "In progress", "Not started", "Finished" };
                 @Html.DropDownListFor(m => m.Status, new SelectList(ViableStatuses),
                 "Selectati categoria", new { @class = "form-control" })
 
