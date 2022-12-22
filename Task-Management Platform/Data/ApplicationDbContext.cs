@@ -51,7 +51,27 @@ namespace Task_Management_Platform.Data
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Task)
                 .WithMany(t => t.Comments)
-                .HasForeignKey(c => c.TaskId);
+                .HasForeignKey(c => c.TaskId)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(c => c.Project)
+                .WithMany(c => c.Tasks)
+                .HasForeignKey(c => c.ProjectId)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            modelBuilder.Entity<Project>()
+                .HasMany(p => p.Tasks)
+                .WithOne(p => p.Project)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            // TaskUser M-M
+            //modelBuilder.Entity<TaskUser>()
+            //    .HasOne(tu => tu.Task)
+            //    .WithMany(tu => tu.TaskUsers)
+            //    .HasForeignKey(tu => tu.TaskId)
+            //    .OnDelete(DeleteBehavior.ClientCascade);
+            
 
 
         }

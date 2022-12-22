@@ -21,13 +21,14 @@ namespace Task_Management_Platform.Models
 
         public virtual ApplicationUser? Organizer { get; set; }
 
-        public string? ProjectId { get; set; }
+        public int? ProjectId { get; set; }
 
         public virtual Project? Project { get; set; }
 
         public virtual ICollection<Comment>? Comments { get; set; }
 
         public virtual ICollection<TaskUser>? TaskUsers { get; set; }
+
 
     }
 }

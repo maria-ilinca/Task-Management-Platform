@@ -8,6 +8,8 @@ using Task_Management_Platform.Models;
 using Humanizer;
 using Task = Task_Management_Platform.Models.Task;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Ganss.Xss;
 
 namespace Task_Management_Platform.Controllers
 {
@@ -20,7 +22,9 @@ namespace Task_Management_Platform.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public ProjectsController(
-            ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             db = context;
             _userManager = userManager;
@@ -109,6 +113,77 @@ namespace Task_Management_Platform.Controllers
                 return View(project);
             }
         }
+        [Authorize(Roles = "Organizer, Admin")]
+        public IActionResult Edit(int id)
+        {
+            Project project = db.Projects.Include("Tasks")
+                                         .Where(prj => prj.Id == id)
+                                         .First();
+            //project.Tasks = db.Tasks.Where(t => t.ProjectId == id).ToList();
+            if (project.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+            {
+                return View(project);
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa modificati acest proiect";
+                return RedirectToAction("Index");
+            }
+        }
+
+
+        [HttpPost]
+        public IActionResult Edit(int id, Project requestProject)
+        {
+            var sanitizer = new HtmlSanitizer();
+
+            var project = db.Projects.Find(id);
+
+            if(ModelState.IsValid)
+            {
+                if (project.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                {
+                    project.Name = requestProject.Name;
+                    requestProject.Description = sanitizer.Sanitize(requestProject.Description);
+                    project.Description = requestProject.Description;
+                    TempData["message"] = "Proiectul a fost modificat";
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["message"] = "Nu aveti dreptul sa modificati acest proiect";
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                return View(requestProject);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles ="Organizer,Admin")]
+        public ActionResult Delete(int id)
+        {
+            Project project = db.Projects.Include("Tasks")
+                                         .Where(prj => prj.Id == id)
+                                         .First();
+
+            if(project.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+            {
+                db.Projects.Remove(project);
+                db.SaveChanges();
+                TempData["message"] = "Proiectul a fost sters";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa stergeti acest proiect";
+                return RedirectToAction("Index");
+            }
+        }
+
         private void SetAccesRights()
         {
             ViewBag.AfisareButoane = false;

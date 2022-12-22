@@ -160,7 +160,9 @@ namespace Task_Management_Platform.Controllers
         public IActionResult New(Task task)
         {
             if (TempData["ProjectId"] != null)
-                task.ProjectId = TempData["ProjectId"].ToString();
+            {
+                task.ProjectId = (int?)TempData["ProjectId"];
+            }
             task.DataStart = DateTime.Now;
             if (ModelState.IsValid)
             {

@@ -1,0 +1,22 @@
+﻿@model Task_Management_Platform.Models.Project
+
+
+<h2>Editare proiect</h2>
+
+@using(Html.BeginForm(controllerName:"Projects", actionName:"Edit", method: FormMethod.Post, 
+        routeValues: new{id = Model.Id}))
+        {
+            @Html.Label("Name", "Titlul proiectului")
+            <br />
+            @Html.Editor("Name")
+            @Html.ValidationMessageFor(m => m.Name, null, new {@class = "text-danger"})
+            <br />
+            @Html.Label("Description", "Descrierea proiectului")
+            <br />
+            @Html.Editor("Description")
+            @Html.ValidationMessageFor(m => m.Description, null, new {@class = "text-danger"})
+            <br />
+            <br />
+
+            <button class=" btn btn-success" type="submit">Modificati proiectul</button>
+        }
