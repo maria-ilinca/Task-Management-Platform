@@ -27,7 +27,7 @@ namespace Task_Management_Platform.Models
 
         public virtual ICollection<Comment>? Comments { get; set; }
 
-        public virtual ICollection<TaskUser>? TaskUsers { get; set; }
+        public virtual ICollection<UserTask>? UserTasks { get; set; }
 
 
     }

@@ -19,7 +19,7 @@ namespace Task_Management_Platform.Models
         [NotMapped]
         public IEnumerable<SelectListItem>? AllRoles { get; set; }
 
-        public ICollection<TaskUser>? TaskUsers { get; set; }
+        public ICollection<UserTask>? UserTasks { get; set; }
         public ICollection<UserTeam>? UserTeams { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model Task_Management_Platform.Models.Team 
+﻿@model Task_Management_Platform.Models.Team
 @{
     ViewBag.Title = "Afisare Echipa";
 }
@@ -35,7 +35,7 @@
             <div>
                 <select name="UserId" class="form-control">
                     <option selected>Adaugati un user in echipa</option>
-                    @foreach(var user in ViewBag.UserTeams)
+                    @foreach (var user in ViewBag.UserTeams)
                     {
                         <option value="@user.Id" style="color:blue">@user.UserName</option>
                         <div>@user.FirstName</div>
@@ -63,11 +63,6 @@
 
                             <h5 class="card-title" name="Name">@project.Name</h5>
 
-                            @*de completat cu rolurile necesare + nu merge afisat userul care a creat proiectul*@
-                          @*  @if (true)
-                            {
-                                <div><i class="bi bi-person"> Creat de: </i> @project.User.UserName</div>
-                            }*@
 
                             <br />
 
@@ -78,13 +73,11 @@
                     </div>
                 </div>
 
-
             </div>
 
             <br />
             <br />
         }
-
     }
 
     <br />

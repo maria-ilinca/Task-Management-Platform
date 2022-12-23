@@ -15,7 +15,10 @@ namespace Task_Management_Platform.Data
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        
         public DbSet<UserTeam> UserTeams { get; set; }
+
+        public DbSet<UserTask> UserTasks { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Comment> Comments { get; set; }

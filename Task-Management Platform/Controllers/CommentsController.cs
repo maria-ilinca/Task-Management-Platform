@@ -32,6 +32,7 @@ namespace Task_Management_Platform.Controllers
         
         // Adaugarea unui comentariu asociat unui task in baza de date
         [HttpPost]
+        [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult New(Comment comm)
         {
             comm.Date = DateTime.Now;

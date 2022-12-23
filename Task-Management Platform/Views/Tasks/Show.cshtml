@@ -14,7 +14,8 @@
 
     @Html.Partial("TaskInfo", Model)
 
-    @if (ViewBag.AfisareButoane == true)
+    @if (ViewBag.AfisareButoane == true || ViewBag.EsteAdmin)
+
     {
         <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
 
@@ -27,22 +28,27 @@
             </form>
 
         </div>
-    }
+    
 
-    <form method="POST" asp-controller="Tasks" asp-action="AddBookmark">
-        <input type="hidden" name="TaskId" value="@Model.TaskId" />
-        <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
-            <div>
-                <select name="BookmarkId" class="form-control">
-                    <option selected>Adauga un task unei echipe</option>
+        <form method="POST" asp-controller="Tasks" asp-action="AddUser">
+            <input type="hidden" name="TaskId" value="@Model.TaskId" />
+            <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
+                <div>
+                    <select name="UserId" class="form-control">
+                        <option selected>Assign task to a user</option>
+                        @foreach(var user in ViewBag.UserTasks)
+                        {
+                            <option value="@user.Id">@user.UserName</option>
+                        }
        
-                </select>
+                    </select>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-success alert-success" value="+" />
+                </div>
             </div>
-            <div>
-                <input type="submit" class="btn btn-success alert-success" value="+" />
-            </div>
-        </div>
-    </form>
+        </form>
+    }
 </div>
 
 @*

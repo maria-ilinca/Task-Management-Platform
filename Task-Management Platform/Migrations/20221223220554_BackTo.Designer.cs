@@ -12,14 +12,14 @@ using Task_Management_Platform.Data;
 namespace Task_Management_Platform.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221222194021_m99")]
-    partial class m99
+    [Migration("20221223220554_BackTo")]
+    partial class BackTo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -181,10 +181,12 @@ namespace Task_Management_Platform.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -333,32 +335,6 @@ namespace Task_Management_Platform.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("Task_Management_Platform.Models.TaskUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("TaskId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("TaskId");
-
-                    b.ToTable("TaskUser");
-                });
-
             modelBuilder.Entity("Task_Management_Platform.Models.Team", b =>
                 {
                     b.Property<int>("Id")
@@ -379,6 +355,32 @@ namespace Task_Management_Platform.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("Task_Management_Platform.Models.UserTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("TaskId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("UserTasks");
                 });
 
             modelBuilder.Entity("Task_Management_Platform.Models.UserTeam", b =>
@@ -404,7 +406,7 @@ namespace Task_Management_Platform.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("UserTeam");
+                    b.ToTable("UserTeams");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -503,26 +505,26 @@ namespace Task_Management_Platform.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Task_Management_Platform.Models.TaskUser", b =>
-                {
-                    b.HasOne("Task_Management_Platform.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("TaskUsers")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("Task_Management_Platform.Models.Task", "Task")
-                        .WithMany("TaskUsers")
-                        .HasForeignKey("TaskId");
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Task");
-                });
-
             modelBuilder.Entity("Task_Management_Platform.Models.Team", b =>
                 {
                     b.HasOne("Task_Management_Platform.Models.ApplicationUser", null)
                         .WithMany("Teams")
                         .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("Task_Management_Platform.Models.UserTask", b =>
+                {
+                    b.HasOne("Task_Management_Platform.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("UserTasks")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Task_Management_Platform.Models.Task", "Task")
+                        .WithMany("UserTasks")
+                        .HasForeignKey("TaskId");
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("Task_Management_Platform.Models.UserTeam", b =>
@@ -544,11 +546,11 @@ namespace Task_Management_Platform.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("TaskUsers");
-
                     b.Navigation("Tasks");
 
                     b.Navigation("Teams");
+
+                    b.Navigation("UserTasks");
 
                     b.Navigation("UserTeams");
                 });
@@ -562,7 +564,7 @@ namespace Task_Management_Platform.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("TaskUsers");
+                    b.Navigation("UserTasks");
                 });
 
             modelBuilder.Entity("Task_Management_Platform.Models.Team", b =>

@@ -99,6 +99,7 @@ namespace Task_Management_Platform.Controllers
             TempData["ProjectId"] = id;
             return Redirect("/Tasks/New");
         }
+        [Authorize(Roles = "User,Organizer,Admin")]
         public IActionResult New()
         {
             Project project = new Project();
@@ -106,6 +107,7 @@ namespace Task_Management_Platform.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User,Organizer,Admin")]
         public IActionResult New(Project project)
         {
             project.UserId = _userManager.GetUserId(User);
@@ -154,6 +156,7 @@ namespace Task_Management_Platform.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Organizer, Admin")]
         public IActionResult Edit(int id, Project requestProject)
         {
             var sanitizer = new HtmlSanitizer();

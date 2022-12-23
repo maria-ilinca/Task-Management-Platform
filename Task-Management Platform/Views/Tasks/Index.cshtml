@@ -13,18 +13,24 @@
 
 @foreach (Task_Management_Platform.Models.Task task in ViewBag.Tasks)
 {
-    <div class="card">
+  
+    if (User.IsInRole("Admin"))
+    {
+        <div class="card">
 
-        @Html.Partial("TaskInfo", task )
+            @Html.Partial("TaskInfo", task )
 
 
-        <a class="btn btn-success" href="/Tasks/Show/@task.TaskId">Afisare task</a>
+            <a class="btn btn-success" href="/Tasks/Show/@task.TaskId">Afisare task</a>
 
 
-    </div>
+        </div>
 
-    <br />
-    <br />
+        <br />
+        <br />
+    }
+    
+
 }
 
 @*Afisare paginata*@

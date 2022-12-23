@@ -19,7 +19,14 @@ namespace Task_Management_Platform.Controllers
             {
                 ViewBag.AfisareButoane = true;
             }
+
+            if (User.IsInRole("User"))
+            {
+                ViewBag.AfiareUser = true;
+            }
             return View();
+
+            
         }
 
         public IActionResult Privacy()

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Task_Management_Platform.Data;
 using Task_Management_Platform.Models;
@@ -38,6 +39,7 @@ namespace Task_Management_Platform.Controllers
             var tasks = db.Tasks.OrderBy(a => a.DataStart);
             var search = "";
 
+            SetAccesRights();
             //Motor de cautare
 
             if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
@@ -103,6 +105,8 @@ namespace Task_Management_Platform.Controllers
                 ViewBag.PaginationBaseUrl = "/Tasks/Index/?page";
             }
 
+            
+
             return View();
         }
 
@@ -110,8 +114,13 @@ namespace Task_Management_Platform.Controllers
         public IActionResult Show(int id)
         {
             Task task = db.Tasks.Include("Comments")
+                
                 .Where(tsk => tsk.TaskId == id)
                 .First();
+            ViewBag.UserTasks = from user in db.Users
+                                orderby user.LastName
+                                select user;
+
             SetAccesRights();
             return View(task);
         }
@@ -125,7 +134,10 @@ namespace Task_Management_Platform.Controllers
             comment.Date = DateTime.Now;
             comment.UserId = _userManager.GetUserId(User);
 
-            if(ModelState.IsValid)
+            ViewBag.UserTasks = from user in db.Users
+                                orderby user.LastName
+                                select user;
+            if (ModelState.IsValid)
             {
                 db.Comments.Add(comment);
                 db.SaveChanges();
@@ -145,7 +157,45 @@ namespace Task_Management_Platform.Controllers
 
         }
 
+        // Assign task to user (asociare task-user )
+        [HttpPost]
+        [Authorize(Roles = "Organizer, Admin")]
+        public IActionResult AddUser([FromForm] UserTask userTask)
+        {
+            if (ModelState.IsValid)
+            {
+                if (db.UserTasks
+                    .Where(tu => tu.UserId == userTask.UserId)
+                    .Where(tu => tu.TaskId == userTask.TaskId)
+                    .Count() > 0)
+                {
+                    TempData["message"] = "Acest user are deja atribuit task-ul";
+                    TempData["messageType"] = "alert-danger";
+                }
+                else
+                {
+                    db.UserTasks.Add(userTask);
+                    // gasim userul si task-ul din baza de date
+                    // adaugam pentru User in Tasks task-ul corespunzator
+                    //ApplicationUser user = db.Users.Where(t => t.Id == userTask.UserId).First();
+                    //Task task = db.Tasks.Where(t => t.TaskId == userTask.TaskId).First();
+                    //user.Tasks.Add(task);
+                    //ViewBag.UserTasks = task;
+                    db.SaveChanges();
+                    TempData["message"] = "Userului i-a fost atribuit acest task";
+                    TempData["messageType"] = "alert-succes";
+                }
+            }
+            else
+            {
+                TempData["message"] = "Nu s-a putut atribui task-ul userului";
+                TempData["messageType"] = "alert-danger";
+            }
+            return Redirect("/Tasks/Show/" + userTask.TaskId);
+        }
+
         // se afiseaza formularul pentru a completa datele unui task
+        [Authorize(Roles = "Organizer,Admin")]
         public IActionResult New()
         {
             Task task = new Task();
@@ -153,9 +203,10 @@ namespace Task_Management_Platform.Controllers
             return View(task);
         }
 
-  
+
 
         // se adauga task-ul din formular in baza de date
+        [Authorize(Roles ="Organizer,Admin")]
         [HttpPost]
         public IActionResult New(Task task)
         {
@@ -187,12 +238,13 @@ namespace Task_Management_Platform.Controllers
                 return View(task);
             }
 
-           
-
         }
 
-        // formular pentru editarea unui articol
+       
 
+
+        // formular pentru editarea unui articol
+        [Authorize(Roles ="Organizer,Admin")]
         public IActionResult Edit(int id)
         {
             Task task = db.Tasks.First();
@@ -238,27 +290,36 @@ namespace Task_Management_Platform.Controllers
                 return View(requestTask);
             }
         }
-
+        
         [HttpPost]
+        [Authorize(Roles ="Organizer,Admin")]
         public ActionResult Delete(int id)
         {
             Task task = db.Tasks
                                 .First();
-            if (task.Comments != null)
+            if (task.OrganizerId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
-                db.Tasks.Remove((Task)task.Comments);
+                if (task.Comments != null)
+                {
+                    db.Tasks.Remove((Task)task.Comments);
+                }
+                db.Tasks.Remove(task);
+                db.SaveChanges();
+                TempData["message"] = "Task-ul a fost sters";
+                return RedirectToAction("Index");
             }
-            db.Tasks.Remove(task);
-            db.SaveChanges();
-            TempData["message"] = "Task-ul a fost sters";
-            return RedirectToAction("Index");
+            else
+            {
+                TempData["message"] = "Nu aveti acest drept";
+                return View(task);
+            }
         }
 
         // Conditii de afisare a butoanelore se editare/stergere
         private void SetAccesRights()
         {
-            ViewBag.AfisareButoane = true;
-            if (User.IsInRole("Organizator"))
+            ViewBag.AfisareButoane = false;
+            if (User.IsInRole("Organizer"))
             {
                 ViewBag.AfisareButoane = true;
             }
