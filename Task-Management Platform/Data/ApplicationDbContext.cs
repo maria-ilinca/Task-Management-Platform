@@ -15,6 +15,7 @@ namespace Task_Management_Platform.Data
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<UserTeam> UserTeams { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -47,6 +48,12 @@ namespace Task_Management_Platform.Data
 
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<ApplicationUser>()
+                .Property(x => x.FirstName)
+                .HasMaxLength(250);
+            modelBuilder.Entity<ApplicationUser>()
+                .Property(x => x.LastName)
+                .HasMaxLength(250);
 
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Task)

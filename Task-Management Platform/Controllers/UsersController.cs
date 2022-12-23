@@ -132,6 +132,7 @@ namespace Task_Management_Platform.Controllers
                 }
             }
             
+            
             db.ApplicationUsers.Remove(user);
             db.SaveChanges();
 

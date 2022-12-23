@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace Task_Management_Platform.Controllers
 {
@@ -27,6 +28,8 @@ namespace Task_Management_Platform.Controllers
                              orderby team.TeamName
                              select team;
             ViewBag.Teams = teams;
+
+
             return View();
         }
 
@@ -38,10 +41,45 @@ namespace Task_Management_Platform.Controllers
             return Redirect("/Projects/New");
         }
 
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult AddUser([FromForm] UserTeam userTeam)
+        {
+            if (ModelState.IsValid)
+            {
+                if (db.UserTeams
+                    .Where(ut => ut.UserId == userTeam.UserId)
+                    .Where(ut => ut.TeamId == userTeam.TeamId)
+                    .Count() > 0)
+                {
+                    TempData["message"] = "Acest user se afla deja in echipa";
+                    TempData["messageType"] = "alert-danger";
+                }
+                else
+                {
+                    db.UserTeams.Add(userTeam);
+                    db.SaveChanges();
+                    TempData["message"] = "Userul a fost adaugat cu succes";
+                    TempData["messageType"] = "alert-succes";
+
+                }
+            }
+            else
+            {
+                TempData["message"] = "Nu s-a putut adauga userul in echipa";
+                TempData["messageType"] = "alert-danger";
+            }
+            return Redirect("/Teams/Show/" + userTeam.TeamId);
+        }
+
         public ActionResult Show(int id)
         {
             Team team = db.Teams.Include("Projects")
                                 .Where(t => t.Id == id).First();
+            ViewBag.UserTeams = from user in db.Users
+                                orderby user.LastName
+                                select user;
             return View(team);
         }
 

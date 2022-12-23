@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Eventing.Reader;
 using Task_Management_Platform.Data;
 using Task_Management_Platform.Models;
-using Humanizer;
 using Task = Task_Management_Platform.Models.Task;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -76,13 +75,21 @@ namespace Task_Management_Platform.Controllers
         [Authorize(Roles ="User,Organize,Admin")]
         public IActionResult Show(int id)
         {
-            Project project = db.Projects.Include("User")
-                                         .Include("Tasks")
-                                         .Where(pr => pr.Id == id)
-                                         .First();
-            
-            SetAccesRights();
-            return View(project);
+            try
+            {
+                Project project = db.Projects.Include("User")
+                                             .Include("Tasks")
+                                             .Where(pr => pr.Id == id)
+                                             .First();
+                SetAccesRights();
+                return View(project);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+
         }
         // Adaugarea unui task pentru un proiect
         [HttpPost]
