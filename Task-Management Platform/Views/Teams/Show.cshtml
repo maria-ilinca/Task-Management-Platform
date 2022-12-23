@@ -2,23 +2,68 @@
 @{
     ViewBag.Title = "Afisare Echipa";
 }
+<div>
+
+    <h2>@ViewBag.Title</h2>
+
+    <br />
+
+    <p>@Model.TeamName</p>
 
 
-<h2>@ViewBag.Title</h2>
+    <form method="post" action="/Teams/Delete/@Model.Id">
 
-<br />
+        <button class="btn btn-danger" type="submit">Sterge echipa</button>
 
-<p>@Model.TeamName</p>
+    </form>
+
+    <form method="post" action="/Teams/AddProject/@Model.Id">
+        <button class="btn btn-primary" type="submit">Adauga proiect</button>
+    </form>
+
+    @*afisare proiectele echipei*@
+    @if (Model.Projects.Count() != 0)
+    {
+        @foreach (var project in Model.Projects)
+        {
+            <div class="card">
+
+                <div class="col-4 mb-4">
+                    <div class="card" style="width: 100%;">
+                        @*<img src="..." class="card-img-top" alt="..."> *@
+
+                        <div class="card-body">
+
+                            <h5 class="card-title" name="Name">@project.Name</h5>
+
+                            @*de completat cu rolurile necesare + nu merge afisat userul care a creat proiectul*@
+                          @*  @if (true)
+                            {
+                                <div><i class="bi bi-person"> Creat de: </i> @project.User.UserName</div>
+                            }*@
+
+                            <br />
+
+                            <a class="btn alert-success" href="/Projects/Show/@project.Id">Detalii proiect</a>
 
 
-<form method="post" action="/Teams/Delete/@Model.Id">
+                        </div>
+                    </div>
+                </div>
 
-    <button class="btn btn-danger" type="submit">Sterge echipa</button>
 
-</form>
-<br />
-<a class="btn alert-success" href="/Teams/Index/">Afisati lista tuturor echipelor tale</a>
+            </div>
 
-<br />
-<hr />
-<br />
+            <br />
+            <br />
+        }
+
+    }
+
+    <br />
+    <a class="btn alert-success" href="/Teams/Index/">Afisati lista tuturor echipelor</a>
+
+    <br />
+    <hr />
+    <br />
+</div>

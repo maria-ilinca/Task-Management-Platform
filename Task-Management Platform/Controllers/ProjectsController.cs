@@ -10,6 +10,7 @@ using Task = Task_Management_Platform.Models.Task;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Ganss.Xss;
+using System.Threading.Tasks;
 
 namespace Task_Management_Platform.Controllers
 {
@@ -63,7 +64,7 @@ namespace Task_Management_Platform.Controllers
 
             else
             {
-                TempData["message"] = "Nu aveti drepturi";
+                TempData["message"] = "Nu aveti acest drept";
                 return RedirectToAction("Index", "Tasks");
             }
 
@@ -79,12 +80,13 @@ namespace Task_Management_Platform.Controllers
                                          .Include("Tasks")
                                          .Where(pr => pr.Id == id)
                                          .First();
+            
             SetAccesRights();
             return View(project);
         }
         // Adaugarea unui task pentru un proiect
         [HttpPost]
-        [Authorize(Roles = "User,Organizer,Admin")]
+        [Authorize(Roles = "Organizer,Admin")]
         public IActionResult AddTask(int id)
         {
             TempData["ProjectId"] = id;
@@ -104,6 +106,18 @@ namespace Task_Management_Platform.Controllers
             if(ModelState.IsValid)
             {
                 db.Projects.Add(project);
+                if (TempData["TeamId"] != null)
+                {
+                    int? teamId = (int?)TempData["TeamId"];
+                    project.TeamId = teamId;
+                    Team team = db.Teams.Find(teamId);
+                    team.Projects.Add(project);
+                    db.SaveChanges();
+                    TempData["message"] = "Proiectul a fost creat";
+                    // resetam TeamId, altfel ramane setat cu ultimul
+                    TempData["TeamId"] = null;
+                    return Redirect($"/Teams/Show/{teamId}");
+                }
                 db.SaveChanges();
                 TempData["message"] = "Proiectul a fost creat cu succes";
                 return RedirectToAction("Index");

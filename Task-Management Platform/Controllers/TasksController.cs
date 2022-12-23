@@ -145,7 +145,7 @@ namespace Task_Management_Platform.Controllers
 
         }
 
-        // se afiseaza formularul pentru a completa datele unui articol
+        // se afiseaza formularul pentru a completa datele unui task
         public IActionResult New()
         {
             Task task = new Task();
@@ -155,26 +155,40 @@ namespace Task_Management_Platform.Controllers
 
   
 
-        // se adauga articolul din formular in baza de date
+        // se adauga task-ul din formular in baza de date
         [HttpPost]
         public IActionResult New(Task task)
         {
-            if (TempData["ProjectId"] != null)
-            {
-                task.ProjectId = (int?)TempData["ProjectId"];
-            }
+            
             task.DataStart = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Tasks.Add(task);
+                // adaugam task-ul in lista cu task-uri din project
+                if (TempData["ProjectId"] != null)
+                {
+                    int? projectId = (int?)TempData["ProjectId"];
+                    task.ProjectId = projectId;
+                    Project project = db.Projects.Find(projectId);
+                    project.Tasks.Add(task);
+                    db.SaveChanges();
+                    TempData["message"] = "Task-ul a fost adaugat";
+                    // resetam ProjectId, altfel ramane setat cu ultimul
+                    TempData["ProjectId"] = null;
+                    return Redirect($"/Projects/Show/{projectId}");
+                }
                 db.SaveChanges();
-                TempData["message"] = "Taskul a fost adaugat";
+                TempData["message"] = "Task-ul a fost adaugat";
+
                 return RedirectToAction("Index");
             }
             else
             {
                 return View(task);
             }
+
+           
+
         }
 
         // formular pentru editarea unui articol

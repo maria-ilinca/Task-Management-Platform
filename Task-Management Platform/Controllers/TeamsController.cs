@@ -3,7 +3,7 @@ using Task_Management_Platform.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Task_Management_Platform.Controllers
 {
@@ -30,10 +30,19 @@ namespace Task_Management_Platform.Controllers
             return View();
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Organizer,Admin")]
+        public IActionResult AddProject(int id)
+        {
+            TempData["TeamId"] = id;
+            return Redirect("/Projects/New");
+        }
+
         public ActionResult Show(int id)
         {
-            Team category = db.Teams.Find(id);
-            return View(category);
+            Team team = db.Teams.Include("Projects")
+                                .Where(t => t.Id == id).First();
+            return View(team);
         }
 
         public IActionResult New()

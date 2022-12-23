@@ -16,6 +16,7 @@
 
 <div class="card-body">
     <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Name</h3>
+    <h4 class="card-footer py-3 px-3 rounded-2">Creat de: @Model.User.UserName</h4>
     @if (Model.Description != null)
     {
         <dib class="card-text">@Html.Raw(Model.Description)</dib>
@@ -42,5 +43,22 @@
 @*    <a asp-controller="Tasks" asp-action="New">
         <input type="button" class="btn btn-primary" value="New" />
     </a>*@
+
+    @*afisare task-uri pentru fiecare proiect*@
+    @foreach(var task in Model.Tasks)
+    {
+        <div class="card">
+
+            @Html.Partial("TaskInfo", task )
+
+
+            <a class="btn btn-success" href="/Tasks/Show/@task.TaskId">Afisare task</a>
+
+
+        </div>
+
+        <br />
+        <br />
+    }
 
 </div>
