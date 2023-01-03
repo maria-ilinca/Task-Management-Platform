@@ -12,8 +12,8 @@ using Task_Management_Platform.Data;
 namespace Task_Management_Platform.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230103001823_test")]
-    partial class test
+    [Migration("20230103124128_4thDatabase")]
+    partial class _4thDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

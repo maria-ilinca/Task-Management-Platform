@@ -88,7 +88,7 @@ namespace Task_Management_Platform.Controllers
                     Console.WriteLine($"Count: {team.UserTeams.Count()}");
 
                     TempData["message"] = "Userul a fost adaugat cu succes";
-                    TempData["messageType"] = "alert-succes";
+                    TempData["messageType"] = "alert-success";
 
                 }
             }

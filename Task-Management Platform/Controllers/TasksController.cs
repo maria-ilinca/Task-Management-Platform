@@ -149,6 +149,7 @@ namespace Task_Management_Platform.Controllers
             ViewBag.UserTasks = from user in db.Users
                                 orderby user.LastName
                                 select user;
+            SetAccesRights();
             if (ModelState.IsValid)
             {
                 db.Comments.Add(comment);
@@ -234,12 +235,14 @@ namespace Task_Management_Platform.Controllers
             task.DataStart = DateTime.Now;
             if (ModelState.IsValid)
             {
+                task.OrganizerId = _userManager.GetUserId(User);
                 db.Tasks.Add(task);
                 // adaugam task-ul in lista cu task-uri din project
                 if (TempData["ProjectId"] != null)
                 {
                     int? projectId = (int?)TempData["ProjectId"];
                     task.ProjectId = projectId;
+                    
                     Project project = db.Projects.Find(projectId);
                     project.Tasks.Add(task);
                     db.SaveChanges();

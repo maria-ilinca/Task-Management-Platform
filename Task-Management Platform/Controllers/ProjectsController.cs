@@ -99,8 +99,22 @@ namespace Task_Management_Platform.Controllers
         [Authorize(Roles = "Organizer,Admin")]
         public IActionResult AddTask(int id)
         {
-            TempData["ProjectId"] = id;
-            return Redirect("/Tasks/New");
+
+            Project project = db.Projects.Include("Tasks")
+                                         .Where(prj => prj.Id == id)
+                                         .First();
+            if (project.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+            {
+
+                TempData["ProjectId"] = id;
+                return Redirect("/Tasks/New");
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa adaugati task-uri la acest proiect";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Index");
+            }
         }
 
 
@@ -120,15 +134,17 @@ namespace Task_Management_Platform.Controllers
         {
             ApplicationUser user = db.Users.Find(id);
             //var roles = db.Roles.ToList();
-            List<string> roles = new List<string>{ "User"};
+            List<string> roles = new List<string>{"User"};
             foreach(var role in roles)
             {
                 Console.WriteLine($"\n\n\n\n\n{ role}");
                 await _userManager.RemoveFromRoleAsync(user, role);
             }
-           
-            await _userManager.AddToRoleAsync(user, "Organizer");
-            db.SaveChanges();
+            if (!User.IsInRole("Admin"))
+            {
+                await _userManager.AddToRoleAsync(user, "Organizer");
+                db.SaveChanges();
+            }
             Console.WriteLine($"\n\n\n\nAici:{user.Id}\n");
             Console.WriteLine(User.IsInRole("Organizer"));
             Console.WriteLine(User.IsInRole("User"));

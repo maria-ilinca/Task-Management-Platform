@@ -18,6 +18,7 @@ namespace Task_Management_Platform.Controllers
             if (User.IsInRole("Admin"))
             {
                 ViewBag.AfisareButoane = true;
+                ViewBag.AfisareOrganizer = false;
             }
 
             if (User.IsInRole("User"))

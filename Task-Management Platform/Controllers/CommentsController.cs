@@ -32,11 +32,11 @@ namespace Task_Management_Platform.Controllers
         
         // Adaugarea unui comentariu asociat unui task in baza de date
         [HttpPost]
-        [Authorize(Roles = "User,Editor,Admin")]
+        [Authorize(Roles = "User,Organizer,Admin")]
         public IActionResult New(Comment comm)
         {
             comm.Date = DateTime.Now;
-
+            comm.User = db.ApplicationUsers.Find(_userManager.GetUserId(User));
             if(ModelState.IsValid)
             {
                 db.Comments.Add(comm);
@@ -53,7 +53,7 @@ namespace Task_Management_Platform.Controllers
 
         // Stergerea unui comentariu asociat unui task din baza de date
         [HttpPost]
-        [Authorize(Roles = "User,Editor,Admin")]
+        [Authorize(Roles = "User,Organizer,Admin")]
         public IActionResult Delete(int id)
         {
             Comment comm = db.Comments.Find(id);
@@ -73,7 +73,7 @@ namespace Task_Management_Platform.Controllers
         }
 
         // Editam un comentariu existent
-        [Authorize(Roles = "User,Editor,Admin")]
+        [Authorize(Roles = "User,Organizer,Admin")]
         public IActionResult Edit(int id)
         {
             Comment comm = db.Comments.Find(id);
@@ -91,7 +91,7 @@ namespace Task_Management_Platform.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "User,Editor,Admin")]
+        [Authorize(Roles = "User,Organizer,Admin")]
         public IActionResult Edit(int id, Comment requestComment)
         {
             Comment comm = db.Comments.Find(id);

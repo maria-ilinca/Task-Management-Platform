@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Task_Management_Platform.Migrations
 {
-    public partial class test5 : Migration
+    public partial class _4thDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

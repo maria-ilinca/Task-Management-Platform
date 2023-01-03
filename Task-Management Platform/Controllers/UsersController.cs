@@ -69,25 +69,25 @@ namespace Task_Management_Platform.Controllers
             return View(user);
         }
 
-        //[HttpPost]
-        //public async Task<int> EditRoleFromUser(string id)
-        //{
-        //    ApplicationUser user = db.Users.Find(id);
+        [HttpPost]
+        public async Task<int> EditRoleFromUser(string id)
+        {
+            ApplicationUser user = db.Users.Find(id);
 
-        //    user.AllRoles = GetAllRoles();
-        //    var roles = db.Roles.ToList();
-        //    foreach (var role in roles)
-        //    {
-        //        Console.WriteLine(role.Name);
-        //        await _userManager.RemoveFromRoleAsync(user, role.Name);
-        //    }
+            user.AllRoles = GetAllRoles();
+            var roles = db.Roles.ToList();
+            foreach (var role in roles)
+            {
+                Console.WriteLine(role.Name);
+                await _userManager.RemoveFromRoleAsync(user, role.Name);
+            }
 
-        //    await _userManager.AddToRoleAsync(user, "Organizer");
-        //    db.SaveChanges();
-        //    Console.WriteLine($"\n\n\n\nAici:{user.Id}\n");
-        //    Console.WriteLine(User.IsInRole("Organizer"));
-        //    return 0;
-        //}
+            await _userManager.AddToRoleAsync(user, "Organizer");
+            db.SaveChanges();
+            Console.WriteLine($"\n\n\n\nAici:{user.Id}\n");
+            Console.WriteLine(User.IsInRole("Organizer"));
+            return 0;
+        }
 
         [HttpPost]
         public async Task<ActionResult> Edit(string id, ApplicationUser newData, [FromForm] string newRole)
