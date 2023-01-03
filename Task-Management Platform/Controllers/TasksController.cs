@@ -36,7 +36,7 @@ namespace Task_Management_Platform.Controllers
         [Authorize(Roles = "User, Organizer, Admin")]
         public IActionResult Index()
         {
-            var tasks = db.Tasks.OrderBy(a => a.DataStart);
+            var tasks = db.Tasks.Include("UserTasks").OrderBy(a => a.DataStart);
             var search = "";
 
             SetAccesRights();
@@ -60,6 +60,7 @@ namespace Task_Management_Platform.Controllers
 
                 tasks = db.Tasks.Where(task => mergedIds.Contains(task.TaskId))
                                 .Include("Status")
+                                .Include("UserTasks") // avem nevoie pentru a afisa pentru fiecare user task-urile in home
                                 .Include("User")
                                 .OrderBy(a => a.DataStart);
             }
@@ -113,16 +114,27 @@ namespace Task_Management_Platform.Controllers
         [Authorize(Roles = "User,Organizer,Admin")]
         public IActionResult Show(int id)
         {
-            Task task = db.Tasks.Include("Comments")
-                
-                .Where(tsk => tsk.TaskId == id)
-                .First();
-            ViewBag.UserTasks = from user in db.Users
-                                orderby user.LastName
-                                select user;
 
             SetAccesRights();
-            return View(task);
+            try
+            {
+                Task task = db.Tasks.Include("Comments")
+                                    .Include("UserTasks")
+                    .Where(tsk => tsk.TaskId == id)
+                    .First();
+
+
+                // pentru dropdown din show
+                ViewBag.UserTasks = from user in db.Users
+                                    orderby user.LastName
+                                    select user;
+
+                return View(task);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         //Adaugarea unui comentariu asociat unui task
@@ -133,7 +145,7 @@ namespace Task_Management_Platform.Controllers
         {
             comment.Date = DateTime.Now;
             comment.UserId = _userManager.GetUserId(User);
-
+            // pentru dropdown din show
             ViewBag.UserTasks = from user in db.Users
                                 orderby user.LastName
                                 select user;
@@ -169,21 +181,29 @@ namespace Task_Management_Platform.Controllers
                     .Where(tu => tu.TaskId == userTask.TaskId)
                     .Count() > 0)
                 {
+                    
                     TempData["message"] = "Acest user are deja atribuit task-ul";
                     TempData["messageType"] = "alert-danger";
                 }
                 else
                 {
                     db.UserTasks.Add(userTask);
+                    db.SaveChanges();
+                    Task task = db.Tasks.Include("UserTasks").Where(t => t.TaskId == userTask.TaskId).First();
+                    //Task task = db.Tasks.Find(userTask.TaskId);
+                    task.UserTasks.Add(userTask);
+
+                    db.SaveChanges();
+
                     // gasim userul si task-ul din baza de date
                     // adaugam pentru User in Tasks task-ul corespunzator
                     //ApplicationUser user = db.Users.Where(t => t.Id == userTask.UserId).First();
                     //Task task = db.Tasks.Where(t => t.TaskId == userTask.TaskId).First();
                     //user.Tasks.Add(task);
                     //ViewBag.UserTasks = task;
-                    db.SaveChanges();
+                    
                     TempData["message"] = "Userului i-a fost atribuit acest task";
-                    TempData["messageType"] = "alert-succes";
+                    TempData["messageType"] = "alert-success";
                 }
             }
             else
@@ -315,7 +335,7 @@ namespace Task_Management_Platform.Controllers
             }
         }
 
-        // Conditii de afisare a butoanelore se editare/stergere
+        // Conditii de afisare a butoanelore de editare/stergere
         private void SetAccesRights()
         {
             ViewBag.AfisareButoane = false;

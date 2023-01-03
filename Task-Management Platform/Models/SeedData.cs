@@ -21,7 +21,7 @@ namespace Task_Management_Platform.Models
                 // daca nu exista niciunul, le cream noi
                 context.Roles.AddRange(
                     new IdentityRole { Id = "2b81e1d6-fc64-4513-9509-9a07c21deea6", Name = "Admin", NormalizedName = "Admin".ToUpper() },
-                    new IdentityRole { Id = "2b81e1d6-fc64-4513-9509-9a07c21deea7", Name = "Organizator", NormalizedName = "Organizator".ToUpper() },
+                    new IdentityRole { Id = "2b81e1d6-fc64-4513-9509-9a07c21deea7", Name = "Organizer", NormalizedName = "Organizer".ToUpper() },
                     new IdentityRole { Id = "2b81e1d6-fc64-4513-9509-9a07c21deea8", Name = "User", NormalizedName = "User".ToUpper() }
                 );
 

@@ -13,16 +13,59 @@
 
 <br />
 
-@foreach (var team in ViewBag.Teams)
+@if (User.IsInRole("Admin"))
 {
-    @Html.Label("TeamName", "Numele echipei din care faci parte")
-    <p>@team.TeamName</p>
-    <a class="btn alert-success" href="/Teams/Show/@team.Id">Afisare Echipa</a>
-    <a class="btn alert-success" href="/Teams/Edit/@team.Id">Editare Echipa</a>
-    <br />
-    <hr />
-    <br />
+    @foreach (var team in ViewBag.Teams)
+    {
+
+        @Html.Label("TeamName", "Numele echipei din care faci parte")
+        <p>@team.TeamName</p>
+        <a class="btn alert-success" href="/Teams/Show/@team.Id">Afisare Echipa</a>
+        @if (ViewBag.EsteAdmin == true)
+        {
+            <a class="btn alert-success" href="/Teams/Edit/@team.Id">Editare Echipa</a>
+        }
+        <br />
+        <hr />
+        <br />
+    }
+}
+
+@if(User.IsInRole("User") || User.IsInRole("Organizer"))
+{
+    @foreach (Task_Management_Platform.Models.Team team in ViewBag.Teams)
+    {
+        Console.WriteLine($"\n\n\nTeamID1:{team.Id}");
+        Console.WriteLine($"\n{ViewBag.UserCurent}");
+        // o sa parcurga toate echipele si e posibil ca unele inca sa nu aiba useri asociati
+        if (team.UserTeams != null)
+        {
+            @foreach (UserTeam userTeam in team.UserTeams)
+            {
+                Console.WriteLine($"\n\n\n\nUserTeam: {userTeam.UserId}");
+                Console.WriteLine($"\nUserCurent: {ViewBag.UserCurent}");
+                @if (userTeam.UserId == ViewBag.UserCurent)
+                {
+                    @Html.Label("TeamName", "Numele echipei din care faci parte")
+                    <p>@team.TeamName</p>
+                    <a class="btn alert-success" href="/Teams/Show/@team.Id">Afisare Echipa</a>
+                    @if (ViewBag.EsteAdmin == true)
+                    {
+                        <a class="btn alert-success" href="/Teams/Edit/@team.Id">Editare Echipa</a>
+                    }
+                    <br />
+                    <hr />
+                    <br />
+                }
+
+            }
+
+        }
+    }
 }
 <br />
-<a class="btn btn-success" href="/Teams/New">Adauga o noua echipa</a>
+@if (ViewBag.EsteAdmin == true)
+{
+    <a class="btn btn-success" href="/Teams/New">Adauga o noua echipa</a>
+}
 <br />

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Task_Management_Platform.Models;
 
@@ -12,7 +13,6 @@ namespace Task_Management_Platform.Controllers
         {
             _logger = logger;
         }
-
         public IActionResult Index()
         {
             if (User.IsInRole("Admin"))
@@ -22,11 +22,18 @@ namespace Task_Management_Platform.Controllers
 
             if (User.IsInRole("User"))
             {
-                ViewBag.AfiareUser = true;
+                ViewBag.AfisareUser = true;
             }
+           
+
+            if(User.IsInRole("Organizer"))
+            {
+                ViewBag.AfisareOrganizer = true;
+            }
+
             return View();
 
-            
+
         }
 
         public IActionResult Privacy()

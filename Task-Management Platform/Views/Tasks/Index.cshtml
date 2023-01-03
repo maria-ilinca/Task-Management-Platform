@@ -18,7 +18,7 @@
     {
         <div class="card">
 
-            @Html.Partial("TaskInfo", task )
+            @Html.Partial("TaskInfo", task)
 
 
             <a class="btn btn-success" href="/Tasks/Show/@task.TaskId">Afisare task</a>
@@ -28,6 +28,32 @@
 
         <br />
         <br />
+    }
+    if(User.IsInRole("User"))
+    {
+        if (task.UserTasks != null)
+        {
+            @foreach (UserTask userTask in task.UserTasks)
+            {
+                
+                if (userTask.UserId == ViewBag.UserCurent)
+                {
+                    <div class="card">
+
+                        @Html.Partial("TaskInfo", task )
+
+
+                        <a class="btn btn-success" href="/Tasks/Show/@task.TaskId">Afisare task</a>
+
+
+                    </div>
+
+                    <br />
+                    <br />
+                }
+            }
+
+        }
     }
     
 

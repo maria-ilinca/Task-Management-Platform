@@ -23,7 +23,12 @@
     </div>
 }
 
-@if (ViewBag.AfisareUser == true)
+@if (ViewBag.AfisareUser == true || ViewBag.Organizer == true)
 {
-    <a class="btn btn-primary" href="/Tasks">Tasks</a>
+    <div>
+        <a class="btn btn-dark" href="/Tasks">Tasks</a>
+        <a class="btn btn-dark" href="/Teams">Echipele din care faci parte</a>
+    </div>
 }
+
+

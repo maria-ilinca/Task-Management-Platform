@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Ganss.Xss;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Resources;
 
 namespace Task_Management_Platform.Controllers
 {
@@ -72,7 +75,7 @@ namespace Task_Management_Platform.Controllers
 
         //Afisare proiect individual
 
-        [Authorize(Roles ="User,Organize,Admin")]
+        [Authorize(Roles ="User,Organizer,Admin")]
         public IActionResult Show(int id)
         {
             try
@@ -99,6 +102,11 @@ namespace Task_Management_Platform.Controllers
             TempData["ProjectId"] = id;
             return Redirect("/Tasks/New");
         }
+
+
+
+
+
         [Authorize(Roles = "User,Organizer,Admin")]
         public IActionResult New()
         {
@@ -106,18 +114,45 @@ namespace Task_Management_Platform.Controllers
             return View(project);
         }
 
+
+
+        public async Task<int> EditRole(string id)
+        {
+            ApplicationUser user = db.Users.Find(id);
+            //var roles = db.Roles.ToList();
+            List<string> roles = new List<string>{ "User"};
+            foreach(var role in roles)
+            {
+                Console.WriteLine($"\n\n\n\n\n{ role}");
+                await _userManager.RemoveFromRoleAsync(user, role);
+            }
+           
+            await _userManager.AddToRoleAsync(user, "Organizer");
+            db.SaveChanges();
+            Console.WriteLine($"\n\n\n\nAici:{user.Id}\n");
+            Console.WriteLine(User.IsInRole("Organizer"));
+            Console.WriteLine(User.IsInRole("User"));
+            return 0;
+        }
+
         [HttpPost]
         [Authorize(Roles = "User,Organizer,Admin")]
-        public IActionResult New(Project project)
+
+
+        public async Task<IActionResult> New(Project project)
         {
             project.UserId = _userManager.GetUserId(User);
-
-            if(ModelState.IsValid)
+            await EditRole(_userManager.GetUserId(User));
+            if (ModelState.IsValid)
             {
                 db.Projects.Add(project);
+                //var user = db.Users.Find(x => x.UserId == userId);
+                
                 if (TempData["TeamId"] != null)
                 {
+                    
                     int? teamId = (int?)TempData["TeamId"];
+                  
                     project.TeamId = teamId;
                     Team team = db.Teams.Find(teamId);
                     team.Projects.Add(project);
@@ -136,6 +171,7 @@ namespace Task_Management_Platform.Controllers
                 return View(project);
             }
         }
+
         [Authorize(Roles = "Organizer, Admin")]
         public IActionResult Edit(int id)
         {
@@ -212,7 +248,7 @@ namespace Task_Management_Platform.Controllers
         {
             ViewBag.AfisareButoane = false;
 
-            if(User.IsInRole("Organizer") || User.IsInRole("User"))
+            if(User.IsInRole("Organizer") || User.IsInRole("Admin"))
             {
                 ViewBag.AfisareButoane = true;
             }

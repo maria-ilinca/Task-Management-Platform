@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Task_Management_Platform.Migrations
 {
-    public partial class BackTo : Migration
+    public partial class test5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -19,34 +19,39 @@
     <p>@Model.TeamName</p>
 
 
-    <form method="post" action="/Teams/Delete/@Model.Id">
-
-        <button class="btn btn-danger" type="submit">Sterge echipa</button>
-
-    </form>
-
+    
     <form method="post" action="/Teams/AddProject/@Model.Id">
         <button class="btn btn-primary" type="submit">Adauga proiect</button>
     </form>
 
-    <form method="POST" asp-controller="Teams" asp-action="AddUser">
-        <input type="hidden" name="TeamId" value="@Model.Id" />
-        <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
-            <div>
-                <select name="UserId" class="form-control">
-                    <option selected>Adaugati un user in echipa</option>
-                    @foreach (var user in ViewBag.UserTeams)
-                    {
-                        <option value="@user.Id" style="color:blue">@user.UserName</option>
-                        <div>@user.FirstName</div>
-                    }
-                </select>
+    @if (ViewBag.EsteAdmin == true)
+    {
+        <form method="post" action="/Teams/Delete/@Model.Id">
+
+            <button class="btn btn-danger" type="submit">Sterge echipa</button>
+
+        </form>
+
+
+        <form method="POST" asp-controller="Teams" asp-action="AddUser">
+            <input type="hidden" name="TeamId" value="@Model.Id" />
+            <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
+                <div>
+                    <select name="UserId" class="form-control">
+                        <option selected>Adaugati un user in echipa</option>
+                        @foreach (var user in ViewBag.UserTeams)
+                        {
+                            <option value="@user.Id" style="color:blue">@user.UserName</option>
+                            <div>@user.FirstName</div>
+                        }
+                    </select>
             </div>
             <div>
                 <input type="submit" class="btn btn-success alert-success" value="+" />
             </div>
         </div>
     </form>
+    }
 
     @*afisare proiectele echipei*@
     @if (Model.Projects.Count() != 0)

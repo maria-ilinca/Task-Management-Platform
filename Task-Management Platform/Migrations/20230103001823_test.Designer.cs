@@ -12,8 +12,8 @@ using Task_Management_Platform.Data;
 namespace Task_Management_Platform.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221223220554_BackTo")]
-    partial class BackTo
+    [Migration("20230103001823_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
