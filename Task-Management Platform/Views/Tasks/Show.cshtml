@@ -1,5 +1,16 @@
 ﻿@model Task_Management_Platform.Models.Task
 
+<style>
+    body{
+        background-color: #205295;
+        background-image: ""
+    }
+    .comentariu{
+        background-color: #144272;
+        color:aliceblue;
+    }
+</style>
+
 
 @if (TempData["message"] != null)
 {
@@ -10,7 +21,7 @@
 
 <br />
 
-<div class="card">
+<div class="card d-flex justify-content-center" style="background-color: #144272">
 
     @Html.Partial("TaskInfo", Model)
 
@@ -49,6 +60,23 @@
             </div>
         </form>
     }
+    <img src="@Url.Content("~/images/img1.jpg")"/>
+
+    <div class="d-flex flex-row justify-content-center position-relative p-3 border-1 border-top end-0">
+     @using (Html.BeginForm(actionName: "TaskStatus", controllerName: "Tasks",
+        method: FormMethod.Post,
+        routeValues: new { id = Model.TaskId }))
+        {
+
+            <label>Selecteaza status</label>
+            string[] ViableStatuses = new[] { "In progress", "Not started", "Finished" };
+            @Html.DropDownListFor(m => m.Status, new SelectList(ViableStatuses),
+            "Selectati categoria", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Status, null, new { @class = "text-danger" })
+            <br />
+            <button class="btn btn-sm btn-success" type="submit">Modifica status</button>
+        }
+    </div>
 </div>
 
 @*
@@ -102,7 +130,7 @@
 
 
 @*Formularul pentru adaugare comentarii*@
-<div class="container">
+<div class="container ">
 
     <div class="row">
 
@@ -110,7 +138,7 @@
 
         <div class="col-md-8">
 
-            <div class="card">
+            <div class="card comentariu">
 
                 <form method="post" action="/Tasks/Show/@Model.TaskId">
 

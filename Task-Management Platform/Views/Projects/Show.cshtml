@@ -1,5 +1,10 @@
 ﻿@model Task_Management_Platform.Models.Project
 
+<style>
+    body{
+        background-color: #205295;
+    }
+</style>
 
 @{
     ViewBag.Title = "Afisare Proiect";
@@ -14,7 +19,7 @@
 
 <br />
 
-<div class="card-body">
+<div class="card-body flex-row justify-content-center">
     <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Name</h3>
     <h4 class="card-footer py-3 px-3 rounded-2">Creat de: @Model.User.UserName</h4>
     @if (Model.Description != null)
@@ -33,12 +38,14 @@
 
             </form>
 
+            <form method="post" action="/Projects/AddTask/@Model.Id">
+                <button class="btn btn-primary flex-row justify-content-end" type="submit">Adauga task</button>
+            </form>
+
         </div>
 
 
-        <form method="post" action="/Projects/AddTask/@Model.Id">
-            <button class="btn btn-primary" type="submit">Adauga task</button>
-    </form>
+       
     }
 
 @*    <a asp-controller="Tasks" asp-action="New">

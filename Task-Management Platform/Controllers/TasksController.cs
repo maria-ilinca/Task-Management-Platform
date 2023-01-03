@@ -313,6 +313,27 @@ namespace Task_Management_Platform.Controllers
                 return View(requestTask);
             }
         }
+
+        public ActionResult TaskStatus(int id, Task requestTask)
+        {
+            Task task = db.Tasks.Find(id);
+            try
+            {
+                Console.Write($"\n\n\n\n{task.Title}");
+                task.Status = requestTask.Status;
+                db.SaveChanges();
+                TempData["message"] = "Statusul task-ului a fost actualizat";
+                TempData["messageType"] = "alert-success";
+                return Redirect($"/Tasks/Show/{id}");
+            }
+            catch
+            {
+                TempData["message"] = "Statusul task-ului nu a fost actualizat";
+                TempData["messageType"] = "alert-danger";
+                return Redirect($"/Tasks/Show/{id}");
+            }
+            
+        }
         
         [HttpPost]
         [Authorize(Roles ="Organizer,Admin")]
