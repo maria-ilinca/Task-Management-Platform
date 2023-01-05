@@ -180,6 +180,7 @@ namespace Task_Management_Platform.Controllers
                 }
                 db.SaveChanges();
                 TempData["message"] = "Proiectul a fost creat cu succes";
+                TempData["messageType"] = "alert-success";
                 return RedirectToAction("Index");
             }
             else

@@ -1,4 +1,17 @@
 ﻿@model Task_Management_Platform.Models.Team
+
+<style>
+    body{
+            background-color: #205295;
+    }
+    .echipa-s{
+       background-color: #144272;
+       color: antiquewhite;
+    }
+    .text-centru{
+        text-align: center;
+    }
+</style>
 @{
     ViewBag.Title = "Afisare Echipa";
 }
@@ -10,80 +23,82 @@
     </div>
 }
 
-<div class="card">
+<div class="card echipa-s d-flex flex-column justify-content-center">
 
-    <h2>@ViewBag.Title</h2>
+    <h2 class="text-centru">@ViewBag.Title</h2>
 
     <br />
 
-    <p>@Model.TeamName</p>
+    <h4 class="text-centru">@Model.TeamName</h4>
 
 
-    
-    <form method="post" action="/Teams/AddProject/@Model.Id">
-        <button class="btn btn-primary" type="submit">Adauga proiect</button>
-    </form>
-
-    @if (ViewBag.EsteAdmin == true)
-    {
-        <form method="post" action="/Teams/Delete/@Model.Id">
-
-            <button class="btn btn-danger" type="submit">Sterge echipa</button>
-
+    <div class="d-flex flex-column justify-content-center">
+        <form class="d-flex flex-row justify-content-center" method="post" action="/Teams/AddProject/@Model.Id">
+            <button class="btn btn-primary" type="submit">Adauga proiect</button>
         </form>
+    
+        @if (ViewBag.EsteAdmin == true)
+        {
+            <form class="d-flex flex-row justify-content-center" method="post" action="/Teams/Delete/@Model.Id">
+
+                <button class="btn btn-danger d-flex flex-column justify-content-center" type="submit" style="width: 135px;">Sterge echipa</button>
+
+            </form>
 
 
-        <form method="POST" asp-controller="Teams" asp-action="AddUser">
-            <input type="hidden" name="TeamId" value="@Model.Id" />
-            <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
+            <form method="POST" asp-controller="Teams" asp-action="AddUser">
+                <input type="hidden" name="TeamId" value="@Model.Id" />
+                <div class="d-flex flex-row justify-content-center p-3">
+                    <div>
+                        <select name="UserId" class="form-control">
+                            <option selected>Adaugati un user in echipa</option>
+                            @foreach (var user in ViewBag.UserTeams)
+                            {
+                                <option value="@user.Id">@user.UserName</option>
+                                <div>@user.FirstName</div>
+                            }
+                        </select>
+                </div>
                 <div>
-                    <select name="UserId" class="form-control">
-                        <option selected>Adaugati un user in echipa</option>
-                        @foreach (var user in ViewBag.UserTeams)
-                        {
-                            <option value="@user.Id" style="color:blue">@user.UserName</option>
-                            <div>@user.FirstName</div>
-                        }
-                    </select>
+                    <input type="submit" class="btn btn-success alert-success" value="+" />
+                </div>
             </div>
-            <div>
-                <input type="submit" class="btn btn-success alert-success" value="+" />
-            </div>
-        </div>
-    </form>
-    }
+        </form>
+        }
+    </div>
 
     @*afisare proiectele echipei*@
-    @if (Model.Projects.Count() != 0)
-    {
-        @foreach (var project in Model.Projects)
+    <div class="d-flex flex-wrap flex-row justify-content-around">
+        @if (Model.Projects.Count() != 0)
         {
-            <div class="card">
+            @foreach (var project in Model.Projects)
+            {
+                <div class="card d-flex flex-column justify-content-around mt-2" style="background-color: #144262">
 
-                <div class="col-4 mb-4">
-                    <div class="card" style="width: 100%;">
-                        @*<img src="..." class="card-img-top" alt="..."> *@
+                    <div class="p-4 m-3 mt-2">
+           
 
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-around">
 
-                            <h5 class="card-title" name="Name">@project.Name</h5>
-
-
-                            <br />
-
-                            <a class="btn alert-success" href="/Projects/Show/@project.Id">Detalii proiect</a>
+                                <h5 class="card-title" name="Name">@project.Name</h5>
 
 
+                                <br />
+
+                                <a class="btn alert-success" href="/Projects/Show/@project.Id">Detalii proiect</a>
+
+
+                            </div>
                         </div>
-                    </div>
+                   
+
                 </div>
 
-            </div>
-
-            <br />
-            <br />
+                <br />
+                <br />
+            }
         }
-    }
+    </div>
 
     <br />
     <a class="btn alert-success" href="/Teams/Index/">Afisati lista tuturor echipelor</a>

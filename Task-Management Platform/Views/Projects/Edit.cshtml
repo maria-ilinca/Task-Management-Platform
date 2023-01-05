@@ -1,6 +1,11 @@
 ﻿@model Task_Management_Platform.Models.Project
 
 
+<style>
+    body {
+        background-image: url("@Url.Content("~/images/img2.png")");
+    }
+</style>
 <h2>Editare proiect</h2>
 
 @using(Html.BeginForm(controllerName:"Projects", actionName:"Edit", method: FormMethod.Post, 

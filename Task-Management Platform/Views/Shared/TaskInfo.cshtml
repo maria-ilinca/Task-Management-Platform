@@ -8,9 +8,10 @@
         background-color: #144272;
     }
 </style>
+<script src="https://kit.fontawesome.com/db688ea2cd.js" crossorigin="anonymous"></script>
 <div class="card-body taskCard w-100 h-100">
 
-    <h3 class="card-title alert-success py-3 px-3 rounded-1" style="background-color:#0A2647; color:aliceblue">@Model.Title</h3>
+    <h3 class="card-title alert-success py-3 px-3 rounded-1 fa fa-tasks" style="background-color:#0A2647; color:aliceblue">@Model.Title</h3>
     <div class="card-text">@Html.Raw(Model.Description)</div>
     <div class="d-flex justify-content-between flex-row mt-5">
         <div><i class="bg-info bi-globe"></i>@Model.Status</div>

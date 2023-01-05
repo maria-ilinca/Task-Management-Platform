@@ -1,6 +1,14 @@
-﻿@model Task_Management_Platform.Models.Project
+﻿<style>
+    body {
+        background-image: url("@Url.Content("~/images/img4.png")");
+    }
+</style>
 
-<h2 class="text-center mt-5">Creare task</h2>
+@model Task_Management_Platform.Models.Project
+
+
+
+<h2 class="text-center mt-5">Creare proiect</h2>
 <br />
 
 <div class="container mt-5">
@@ -20,7 +28,7 @@
 
                 @Html.Label("Description", "Descriere proiect")
                 <br />
-                @Html.TextArea("Description", null, new {@class="summernote"})
+                @Html.TextArea("Description", null, new {@rows="5", @cols="60"})
                 @Html.ValidationMessage("Description", null, new {@class="text-danger"})
                 <br /><br />
                 

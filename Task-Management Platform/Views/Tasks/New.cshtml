@@ -1,9 +1,17 @@
 ﻿@model Task_Management_Platform.Models.Task
 
+<style>
+    body{
+        background-image: url("@Url.Content("~/images/img4.png")");
+    }
+    .form-text{
+        color:antiquewhite;
+    }
 
+</style>
 <h2 class="text-center mt-5">Adaugarea unui task</h2>
 <br />
-<div class="container mt-5">
+<div class="container mt-5 form-text">
     <div class="row">
         <div class="col-6 offset-3">
 
@@ -13,7 +21,7 @@
 
                 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-                @Html.Label("Title", "Numele unui task")
+                @Html.Label("Title", "Numele task-ului")
                 <br />
                 @Html.TextBox("Title", null, new { @class = "form-control" })
 
@@ -22,7 +30,7 @@
 
                 <br />
 
-                @Html.Label("Description", "Descrierea unui task")
+                @Html.Label("Description", "Descrierea task-ului")
                 <br />
                 @Html.TextArea("Description", null, new { @class = "form-control" })
 
@@ -53,7 +61,7 @@
                 <br />
                 <br />
 
-                <label>Selectati task-ul in functie de status</label>
+                <label>Selectati statusul task-ului</label>
                 string[] ViableStatuses = new[] { "In progress", "Not started", "Finished" };
                 @Html.DropDownListFor(m => m.Status, new SelectList(ViableStatuses),
                 "Selectati categoria", new { @class = "form-control" })
