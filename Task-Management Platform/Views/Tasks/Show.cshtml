@@ -30,7 +30,7 @@
     {
         <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
 
-            <a class="btn btn-success" href="/Tasks/Edit/@Model.TaskId">Modifica task-ul</a>
+            <a class="btn btn-success" style="background-color:#00C2B2" href="/Tasks/Edit/@Model.TaskId">Modifica task-ul</a>
 
             <form method="post" action="/Tasks/Delete/@Model.TaskId">
 
@@ -60,7 +60,7 @@
             </div>
         </form>
     }
-    <img src="@Url.Content("~/images/img1.jpg")"/>
+    @*<img src="@Url.Content("~/images/img1.jpg")"/>*@
 
     <div class="d-flex flex-row justify-content-center position-relative p-3 border-1 border-top end-0">
      @using (Html.BeginForm(actionName: "TaskStatus", controllerName: "Tasks",
@@ -74,7 +74,7 @@
             "Selectati categoria", new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Status, null, new { @class = "text-danger" })
             <br />
-            <button class="btn btn-sm btn-success" type="submit">Modifica status</button>
+            <button class="btn btn-sm btn-success" style="background-color:#00C2B2" type="submit">Modifica status</button>
         }
     </div>
 </div>
@@ -103,8 +103,10 @@
                     <p>@comm.Content</p>
                     <small>@comm.Date</small>
                     <br />
-                    <strong><i class="bi bi-person"></i>User: @comm.User.UserName</strong>
-
+                    @if (@comm.User != null)
+                    {
+                        <strong><i class="bi bi-person"></i>User: @comm.User.UserName</strong>
+                    }
                 </div>
                 <br>
 
@@ -112,11 +114,11 @@
                 {
                     <div class="d-flex">
                         <div>
-                            <a class="btn btn-outline-primary" href="/Comments/Edit/@comm.Id"><i class="bi bi-pencil-square"></i>Editeaza</a>
+                            <a class="btn btn-info"  href="/Comments/Edit/@comm.Id"><i class="bi bi-pencil-square"></i>Editeaza</a>
                         </div>
                         <div>
                             <form method="post" action="/Comments/Delete/@comm.Id">
-                                <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Sterge</button>
+                                <button class="btn btn-danger" type="submit"><i class="bi bi-trash"></i>Sterge</button>
                             </form>
                         </div>
                     </div>
@@ -155,7 +157,7 @@
 
                         <br /><br />
 
-                        <button class="btn btn-success " type="submit">Adauga comentariul</button>
+                        <button class="btn btn-success" style="background-color:#00C2B2" type="submit">Adauga comentariul</button>
 
                     </div>
 

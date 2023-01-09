@@ -5,10 +5,11 @@
     body{
         background-color: #205295;
     }
+
 </style>
 @if (ViewBag.Message != null)
 {
-    <h2 class="alert @TempData["messageType"] p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+    <h2 class="alert  p-3 rounded-3 text-center mb-5" style="color:antiquewhite">@ViewBag.Message</h2>
 }
 
 <br />

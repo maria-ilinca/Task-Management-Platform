@@ -18,8 +18,10 @@
             <br />
             @Html.Label("Description", "Descrierea proiectului")
             <br />
-            @Html.Editor("Description")
-            @Html.ValidationMessageFor(m => m.Description, null, new {@class = "text-danger"})
+            @*@Html.Editor("Description")*@
+            @*@Html.ValidationMessageFor(m => m.Description, null, new {@class = "text-danger"})*@
+            @Html.TextAreaFor(m=>m.Description)
+            @*<textarea value="@Model.Description"></textarea>*@
             <br />
             <br />
 

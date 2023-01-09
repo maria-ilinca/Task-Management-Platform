@@ -36,11 +36,13 @@ namespace Task_Management_Platform.Controllers
         [Authorize(Roles = "User, Organizer, Admin")]
         public IActionResult Index()
         {
+
             var tasks = db.Tasks.Include("UserTasks").OrderBy(a => a.DataStart);
+     
             var search = "";
 
             SetAccesRights();
-            //Motor de cautare
+            
 
             if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
             {
@@ -96,7 +98,15 @@ namespace Task_Management_Platform.Controllers
 
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
 
-            ViewBag.Tasks = paginatedTasks;
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Tasks = paginatedTasks;
+            }
+            else
+            {
+                ViewBag.Tasks = tasks;
+            }
+            
 
             if(search != "")
             {
@@ -266,7 +276,7 @@ namespace Task_Management_Platform.Controllers
        
 
 
-        // formular pentru editarea unui articol
+        // formular pentru editarea unui task
         [Authorize(Roles ="Organizer,Admin")]
         public IActionResult Edit(int id)
         {

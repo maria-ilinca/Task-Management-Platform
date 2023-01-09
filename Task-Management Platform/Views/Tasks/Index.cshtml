@@ -28,7 +28,7 @@
             @Html.Partial("TaskInfo", task)
 
 
-            <a class="btn btn-success" href="/Tasks/Show/@task.TaskId">Afisare task</a>
+            <a class="btn btn-success" style="background-color:#00C2B2" href="/Tasks/Show/@task.TaskId">Afisare task</a>
 
 
         </div>
@@ -36,7 +36,9 @@
         <br />
         <br />
     }
-    if(User.IsInRole("User"))
+    
+
+    if(User.IsInRole("User") || User.IsInRole("Organizer"))
     {
         if (task.UserTasks != null)
         {
