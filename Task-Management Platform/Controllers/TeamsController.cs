@@ -190,6 +190,7 @@ namespace Task_Management_Platform.Controllers
             }
             ViewBag.EsteAdmin = User.IsInRole("Admin");
             ViewBag.UserCurent = _userManager.GetUserId(User);
+            
         }
     }
 }

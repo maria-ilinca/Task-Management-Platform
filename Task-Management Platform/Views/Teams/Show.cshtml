@@ -37,13 +37,16 @@
             <button class="btn btn-primary" type="submit">Adauga proiect</button>
         </form>
     
-        @if (ViewBag.EsteAdmin == true)
+        @if (ViewBag.EsteAdmin == true || ViewBag.AfisareButoane == true)
         {
-            <form class="d-flex flex-row justify-content-center" method="post" action="/Teams/Delete/@Model.Id">
+            @if (ViewBag.EsteAdmin == true)
+            {
+                <form class="d-flex flex-row justify-content-center" method="post" action="/Teams/Delete/@Model.Id">
 
                 <button class="btn btn-danger d-flex flex-column justify-content-center" type="submit" style="width: 135px;">Sterge echipa</button>
 
             </form>
+            }
 
 
             <form method="POST" asp-controller="Teams" asp-action="AddUser">
