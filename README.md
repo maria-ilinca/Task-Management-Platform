@@ -1,0 +1,10 @@
+# Task-Management-Platform
+![image](https://user-images.githubusercontent.com/99676849/222198980-e7e538b7-b324-43f9-887b-e4bbe8683518.png)
+![image](https://user-images.githubusercontent.com/99676849/222199482-e1901940-05bc-44a3-ab7c-3e895e8ae723.png)
+![image](https://user-images.githubusercontent.com/99676849/222199566-a30102e7-1aa0-46de-a1b0-022390f8b513.png)
+![image](https://user-images.githubusercontent.com/99676849/222199623-66c67151-ea82-4b9b-9f57-aea50a841a56.png)
+![image](https://user-images.githubusercontent.com/99676849/222199721-a79617aa-1283-4064-b75a-5c059450a975.png)
+![image](https://user-images.githubusercontent.com/99676849/222199821-f3e70eed-bd1a-493c-8a42-6b8149915615.png)
+![image](https://user-images.githubusercontent.com/99676849/222199860-3d4de8fb-38eb-41e8-98ce-7aa3ae3d58e3.png)
+![image](https://user-images.githubusercontent.com/99676849/222199890-a7559b68-0dfb-4a00-acbc-a4269d6c2158.png)
+![image](https://user-images.githubusercontent.com/99676849/222199924-d9cd1a78-6493-421d-89c2-8fe0aab2750a.png)
