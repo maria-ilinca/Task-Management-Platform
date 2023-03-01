@@ -62,7 +62,7 @@ namespace Task_Management_Platform.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Organizer")]
         public IActionResult AddUser([FromForm] UserTeam userTeam)
         {
             SetAccesRights();
